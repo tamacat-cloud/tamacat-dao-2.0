@@ -15,7 +15,7 @@ import cloud.tamacat.dao.impl.LoggingDaoTransactionHandler;
 import cloud.tamacat.dao.sql.DBAccessManager;
 
 public class DaoTest {
-	
+
 	Dao<?> dao;
 	
 	@SuppressWarnings("rawtypes")
