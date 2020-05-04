@@ -4,6 +4,7 @@
  */
 package cloud.tamacat.dao.meta;
 
+@SuppressWarnings("exports")
 public interface Column extends Cloneable {
 
 	ColumnDefine PRIMARY_KEY = ColumnDefine.PRIMARY_KEY;

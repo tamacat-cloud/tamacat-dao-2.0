@@ -24,7 +24,7 @@ public class UserDaoTest2 {
 
     @BeforeClass
     public static void createTable() {
-    	UserDao dao = DaoFactory.getDao(UserDao.class);
+    	UserDao dao = DaoFactory.create(UserDao.class);
     	try {
         	dao.setDatabase("javadb");
     		dao.createTable();
@@ -37,7 +37,7 @@ public class UserDaoTest2 {
     
     @AfterClass
     public static void dropTable() {
-    	UserDao dao = DaoFactory.getDao(UserDao.class);
+    	UserDao dao = DaoFactory.create(UserDao.class);
     	try {
         	dao.setDatabase("javadb");
     		dao.dropTable();

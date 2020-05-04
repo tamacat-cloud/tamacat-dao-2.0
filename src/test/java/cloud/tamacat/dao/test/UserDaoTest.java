@@ -22,7 +22,7 @@ public class UserDaoTest {
 
 	@Before
 	public void setUp() throws Exception {
-		dao = DaoFactory.getDao(UserDao.class);
+		dao = DaoFactory.create(UserDao.class);
 	}
 
 	@After

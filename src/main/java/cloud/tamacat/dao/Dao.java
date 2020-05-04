@@ -67,8 +67,9 @@ public class Dao<T extends ORMappingSupport<T>> implements AutoCloseable {
 		this.orm = orm;
 	}
 
-	public void useHitCount(boolean use) {
+	public Dao<T> useHitCount(boolean use) {
 		this.useHitCount = use;
+		return this;
 	}
 
 	public long getHitCount() {

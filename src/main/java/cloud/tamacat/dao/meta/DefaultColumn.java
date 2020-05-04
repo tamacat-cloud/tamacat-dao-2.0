@@ -39,7 +39,7 @@ public class DefaultColumn implements Column, Serializable, Cloneable {
 	}
 
 	public DefaultColumn(Table table, String columnName, DataType type,
-			String name, ColumnDefine... defines) {
+			String name, @SuppressWarnings("exports") ColumnDefine... defines) {
 		this.columnName = columnName;
 		this.type = type;
 		this.name = name;
