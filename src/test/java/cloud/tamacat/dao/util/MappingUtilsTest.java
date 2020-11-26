@@ -6,6 +6,7 @@ package cloud.tamacat.dao.util;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -44,6 +45,13 @@ public class MappingUtilsTest {
 		Data data = new Data();
 		data.val(Data.UPDATE_DATE, new Date(time));
 		assertEquals(String.valueOf(time), MappingUtils.parseString(Data.UPDATE_DATE, new Date(time).getTime()));
+	}
+
+	@Test
+	public void testParseFloat() {
+		Data data = new Data();
+		data.val(Data.NUM2, new BigDecimal("1234567890.1234567890"));
+		assertEquals("1234567890.1234567890", data.val(Data.NUM2));
 	}
 
 	@Test
