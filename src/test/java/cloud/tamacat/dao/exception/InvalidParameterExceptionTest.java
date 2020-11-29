@@ -7,7 +7,6 @@ package cloud.tamacat.dao.exception;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import cloud.tamacat.dao.exception.InvalidParameterException;
 
 public class InvalidParameterExceptionTest {
 

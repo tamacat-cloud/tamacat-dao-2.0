@@ -6,8 +6,6 @@ package cloud.tamacat.dao;
 
 import org.junit.Before;
 import org.junit.Test;
-import cloud.tamacat.dao.Condition;
-import cloud.tamacat.dao.Search;
 import cloud.tamacat.dao.Search.ValueConvertFilter;
 import cloud.tamacat.dao.meta.DefaultColumn;
 import cloud.tamacat.dao.meta.DefaultTable;

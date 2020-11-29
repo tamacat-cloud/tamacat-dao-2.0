@@ -7,7 +7,6 @@ package cloud.tamacat.dao.impl;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import cloud.tamacat.dao.impl.MySQLSearch;
 
 public class MySQLSearchTest {
 

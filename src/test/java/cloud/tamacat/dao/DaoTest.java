@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import cloud.tamacat.dao.Dao;
 import cloud.tamacat.dao.impl.LoggingDaoExecuterHandler;
 import cloud.tamacat.dao.impl.LoggingDaoTransactionHandler;
 import cloud.tamacat.dao.sql.DBAccessManager;

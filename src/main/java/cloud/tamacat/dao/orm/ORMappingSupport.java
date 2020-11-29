@@ -4,8 +4,9 @@
  */
 package cloud.tamacat.dao.orm;
 
-import java.io.Reader;
 import java.util.Map;
+
+import com.google.gson.stream.JsonReader;
 
 import cloud.tamacat.dao.meta.Column;
 
@@ -35,5 +36,5 @@ public interface ORMappingSupport<T extends ORMappingSupport<T>> extends Map<Str
 	 */
 	T del(Column column);
 	
-	void parseJson(Reader reader, Column... columns);
+	void parseJson(JsonReader reader, Column... columns);
 }

@@ -24,7 +24,7 @@ public class User extends MapBasedORMappingBean<User> {
 	public static final Table TABLE = Tables.create("users")
 			.registerColumn(USER_ID, PASSWORD, DEPT_ID, UPDATE_DATE, AGE);
 	
-	//public User() {
-	//	defaultTableName = TABLE.getTableNameWithSchema();
-	//}
+	public User() {
+		//defaultTableName = TABLE.getTableNameWithSchema();
+	}
 }

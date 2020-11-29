@@ -7,7 +7,6 @@ package cloud.tamacat.dao.meta;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import cloud.tamacat.dao.meta.ColumnDefine;
 
 public class ColumnDefineTest {
 

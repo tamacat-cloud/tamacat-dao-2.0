@@ -13,11 +13,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.TimeZone;
 
-import javax.json.Json;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import cloud.tamacat.dao.test.User;
 
 public class JSONUtilsTest {
@@ -58,9 +57,9 @@ public class JSONUtilsTest {
 		String json = "{\"user_id\":\"guest\",\"password\":\"PASSWORD\",\"dept_id\":\"TEST DEPT\",\"update_date\":1483233825000,\"age\":\"20\"}";
 		User bean = new User();
 		//User.UPDATE_DATE.format(null);
-		JSONUtils.parse(bean, Json.createParser(new StringReader(json)), User.TABLE.columns());
+		JSONUtils.parse(bean, new StringReader(json), User.TABLE.columns());
 		String result = "{\"user_id\":\"guest\",\"password\":\"PASSWORD\",\"dept_id\":\"TEST DEPT\",\"update_date\":1483233825000,\"age\":20}";
-		assertEquals(result, bean.toJson(User.TABLE.columns()).build().toString());
+		assertEquals(result, bean.toJson(User.TABLE.columns()).toString());
 		assertEquals(bean.val(User.USER_ID), "guest");
 		assertEquals(bean.val(User.PASSWORD), "PASSWORD");
 		assertEquals(bean.val(User.DEPT_ID), "TEST DEPT");
@@ -77,10 +76,10 @@ public class JSONUtilsTest {
 		User bean = new User();
 		//User.UPDATE_DATE.format("yyyy-MM-dd HH:mm:ss.SSS");
 		//System.out.println(bean.TABLE.find("update_date").getFormat());
-		JSONUtils.parse(bean, Json.createParser(new StringReader(json)), User.TABLE.columns());
+		JSONUtils.parse(bean, new StringReader(json), User.TABLE.columns());
 		
 		//{"user_id":"guest","password":"PASSWORD","dept_id":"TEST DEPT","update_date":1483201425000,"age":20}
-		assertEquals(json, bean.toJson(User.TABLE.columns()).build().toString());
+		assertEquals(json, bean.toJson(User.TABLE.columns()).toString());
 
 		assertEquals(bean.val(User.USER_ID), "guest");
 		assertEquals(bean.val(User.PASSWORD), "PASSWORD");
@@ -96,9 +95,9 @@ public class JSONUtilsTest {
 		String json = "{\"user_id\":\"guest\",\"password\":\"PASSWORD\",\"dept_id\":\"TEST DEPT\",\"update_date\":1483233825000,\"age\":20}";
 		User bean = new User();
 		//User.UPDATE_DATE.format("yyyy-MM-dd HH:mm:ss.S");
-		JSONUtils.parse(bean, Json.createParser(new StringReader(json)), User.TABLE.columns());
+		JSONUtils.parse(bean, new StringReader(json), User.TABLE.columns());
 		//{"user_id":"guest","password":"PASSWORD","dept_id":"TEST DEPT","update_date":1483201425000,"age":20}
-		assertEquals(json, bean.toJson(User.TABLE.columns()).build().toString());
+		assertEquals(json, bean.toJson(User.TABLE.columns()).toString());
 
 		assertEquals(bean.val(User.USER_ID), "guest");
 		assertEquals(bean.val(User.PASSWORD), "PASSWORD");
@@ -112,7 +111,7 @@ public class JSONUtilsTest {
 		User bean = new User();
 		
 		bean.val(User.UPDATE_DATE, new Date(1500000000000L));
-		String json = bean.toJson(User.UPDATE_DATE).build().toString();
+		String json = bean.toJson(User.UPDATE_DATE).toString();
 		assertEquals("{\"update_date\":1500000000000}", json);
 		assertEquals("2017-07-14 02:40:00.000", bean.val(User.UPDATE_DATE));
 		
@@ -121,7 +120,7 @@ public class JSONUtilsTest {
 		User.parse(bean); //TODO rename
 		
 		//User.UPDATE_DATE.format("yyyy-MM-dd HH:mm:ss.SSS");
-		assertEquals("{\"update_date\":1500000000000}", bean.toJson(User.UPDATE_DATE).build().toString());
+		assertEquals("{\"update_date\":1500000000000}", bean.toJson(User.UPDATE_DATE).toString());
 		//{"update_date":"2017-07-14 11:40:00.000"}
 		
 		//User.UPDATE_DATE.format(null); //reset
@@ -131,7 +130,7 @@ public class JSONUtilsTest {
 	public void testParseArray() {
 		String json = "[{\"user_id\":\"user01\"},{\"user_id\":\"user02\"}]";
 		
-		Collection<User> list = JSONUtils.parseArray(Json.createParser(new StringReader(json)), User.class, User.TABLE.columns());
+		Collection<User> list = JSONUtils.parseArray(new StringReader(json), User.class, User.TABLE.columns());
 		if (list.size() == 2) {
 			Iterator<User> it = list.iterator();
 			assertEquals("user01", it.next().val(User.USER_ID));

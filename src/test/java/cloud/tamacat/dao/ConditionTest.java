@@ -7,7 +7,6 @@ package cloud.tamacat.dao;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import cloud.tamacat.dao.Condition;
 import cloud.tamacat.dao.sql.SQLParser;
 
 public class ConditionTest {

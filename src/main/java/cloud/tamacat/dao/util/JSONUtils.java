@@ -4,15 +4,15 @@
  */
 package cloud.tamacat.dao.util;
 
+import java.io.Reader;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-import javax.json.stream.JsonParser;
-import javax.json.stream.JsonParser.Event;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import cloud.tamacat.dao.meta.Column;
 import cloud.tamacat.dao.meta.DataType;
@@ -29,21 +29,21 @@ public class JSONUtils {
 	static final Log LOG = LogFactory.getLog(JSONUtils.class);
 	
 	public static String toString(MapBasedORMappingBean<?> bean, Column... columns) {
-		return json(bean, columns).build().toString();
+		return json(bean, columns).toString();
 	}
 	
 	public static String toString(Collection<? extends MapBasedORMappingBean<?>> list, Column... columns) {
-		return json(list, columns).build().toString();
+		return json(list, columns).toString();
 	}
 	
-	public static JsonObjectBuilder json(MapBasedORMappingBean<?> bean, Column... columns) {
-		JsonObjectBuilder builder = Json.createObjectBuilder();
+	public static JsonObject json(MapBasedORMappingBean<?> bean, Column... columns) {
+		JsonObject json = new JsonObject();
 		for (Column col : columns) {
 			String value = bean.val(col);
 			if (value == null) value = "";
-			builder.add(col.getColumnName(), value);
+			json.addProperty(col.getColumnName(), value);
 		}
-		return builder;
+		return json;
 	}
 
 	/**
@@ -52,49 +52,99 @@ public class JSONUtils {
 	 * @param bean
 	 * @param columns
 	 */
-	public static JsonObjectBuilder toJson(MapBasedORMappingBean<?> bean, Column... columns) {
-		JsonObjectBuilder builder = Json.createObjectBuilder();
+	public static JsonObject toJson(MapBasedORMappingBean<?> bean, Column... columns) {
+		JsonObject json = new JsonObject();
 		for (Column col : columns) {
 			String value = bean.val(col);
 			if (value != null && value.length()>0) {
 				if (col.getType()==DataType.NUMERIC) {
-					builder.add(col.getColumnName(), StringUtils.parse(value, 0L));
+					json.addProperty(col.getColumnName(), StringUtils.parse(value, 0L));
 				} else if (col.getType()==DataType.FLOAT) {
-					builder.add(col.getColumnName(), StringUtils.parse(value, 0d));
+					json.addProperty(col.getColumnName(), StringUtils.parse(value, 0d));
 				} else if (col.getType()==DataType.TIME) {
 					String format = col.getFormat();					
 					if (StringUtils.isNotEmpty(format)) {
 						Date d = DateUtils.parse(value, format);
 						if (d != null) {
-							builder.add(col.getColumnName(), d.getTime()); //DateUtils.getTime(d, format));
+							json.addProperty(col.getColumnName(), d.getTime()); //DateUtils.getTime(d, format));
 						} else {
-							builder.add(col.getColumnName(), value);
+							json.addProperty(col.getColumnName(), value);
 						}
 					} else {
 						if (value.indexOf('.')>0) {
-							builder.add(col.getColumnName(), DateUtils.parse(value, "yyyy-MM-dd HH:mm:ss.SSS").getTime());
+							json.addProperty(col.getColumnName(), DateUtils.parse(value, "yyyy-MM-dd HH:mm:ss.SSS").getTime());
 						} else {
-							builder.add(col.getColumnName(), DateUtils.parse(value, "yyyy-MM-dd HH:mm:ss").getTime());
+							json.addProperty(col.getColumnName(), DateUtils.parse(value, "yyyy-MM-dd HH:mm:ss").getTime());
 						}
 					}
 				} else if (col.getType()==DataType.DATE) {
-					builder.add(col.getColumnName(), DateUtils.parse(value, "yyyy-MM-dd").getTime());
+					json.addProperty(col.getColumnName(), DateUtils.parse(value, "yyyy-MM-dd").getTime());
 				} else {
-					builder.add(col.getColumnName(), value);
+					json.addProperty(col.getColumnName(), value);
 				}
 			}
 		}
-		return builder;
+		return json;
 	}
 	
-	public static JsonArrayBuilder json(Collection<? extends MapBasedORMappingBean<?>> list, Column... columns) {
-		JsonArrayBuilder builder = Json.createArrayBuilder();
+	public static JsonArray json(Collection<? extends MapBasedORMappingBean<?>> list, Column... columns) {
+		JsonArray json = new JsonArray();
 		for (MapBasedORMappingBean<?> bean : list) {
-			builder.add(json(bean, columns));
+			json.add(json(bean, columns));
 		}
-		return builder;
+		return json;
 	}
 	
+	public static Object parse(JsonElement el, Column col) {
+		if (DataType.FLOAT == col.getType()) {
+			return el.getAsBigDecimal();
+		} else if (DataType.NUMERIC == col.getType()) {
+			return el.getAsLong();
+		} else if (DataType.DATE == col.getType() || DataType.TIME == col.getType()) {
+			return new Date(el.getAsLong());
+		} else if (DataType.BOOLEAN == col.getType()) {
+			return el.getAsBoolean();
+		} else {
+			return el.getAsString();
+		}
+	}
+	
+	public static <T extends MapBasedORMappingBean<?>> T parse(T bean, JsonObject json, Column... columns) {
+		for(Column col : columns) {
+			JsonElement el = json.get(col.getName());
+			if (el != null) {
+				bean.val(col, parse(el, col));
+			}
+		}
+		return bean;
+	}
+	
+	public static <T extends MapBasedORMappingBean<?>> T parse(T bean, Reader reader, Column... columns) {
+		return parse(bean, JsonParser.parseReader(reader).getAsJsonObject(), columns);
+	}
+	
+	public static <T extends MapBasedORMappingBean<?>> Collection<T> parseArray(Reader reader, Class<T> type, Column... columns) {
+		Collection<T> list = CollectionUtils.newArrayList();
+		Map<String, Column> colmaps = CollectionUtils.newLinkedHashMap();
+		for (Column col : columns) {
+			colmaps.put(col.getColumnName(), col);
+		}
+		JsonArray array = JsonParser.parseReader(reader).getAsJsonArray();
+		for (JsonElement json : array) {
+			try {
+				T data = ClassUtils.newInstance(type);
+				//T data = type.getDeclaredConstructor().newInstance();
+				if (json instanceof JsonObject) {
+					list.add(parse(data, (JsonObject) json, columns));
+				}
+			} catch (Exception e) {
+				//e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	
+	/*
 	public static <T extends MapBasedORMappingBean<?>> T parse(T bean, JsonParser parser, Column... columns) {
 		Map<String, Column> colmaps = CollectionUtils.newLinkedHashMap();
 		for (Column col : columns) {
@@ -240,4 +290,5 @@ public class JSONUtils {
 		}
 		return list;
 	}
+	*/
 }

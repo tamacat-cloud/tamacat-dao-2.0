@@ -4,8 +4,6 @@
  */
 package cloud.tamacat.dao.pool.impl;
 
-import cloud.tamacat.dao.pool.impl.StackObjectPool;
-
 public class Pooling_test {
 
     public static void main(String[] args) {

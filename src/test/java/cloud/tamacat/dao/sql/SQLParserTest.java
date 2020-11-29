@@ -13,7 +13,6 @@ import cloud.tamacat.dao.meta.DefaultTable;
 import cloud.tamacat.dao.meta.Column;
 import cloud.tamacat.dao.meta.Columns;
 import cloud.tamacat.dao.meta.DataType;
-import cloud.tamacat.dao.sql.SQLParser;
 
 import junit.framework.TestCase;
 

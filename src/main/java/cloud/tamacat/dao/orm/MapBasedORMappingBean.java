@@ -4,7 +4,6 @@
  */
 package cloud.tamacat.dao.orm;
 
-import java.io.Reader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -12,11 +11,14 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 
 import cloud.tamacat.dao.exception.InvalidValueLengthException;
 import cloud.tamacat.dao.meta.Column;
+import cloud.tamacat.dao.meta.DataType;
 import cloud.tamacat.dao.util.JSONUtils;
 import cloud.tamacat.dao.util.MappingUtils;
 import cloud.tamacat.util.StringUtils;
@@ -157,12 +159,32 @@ public class MapBasedORMappingBean<T extends MapBasedORMappingBean<T>>
 		}
 	}
 	
-	public JsonObjectBuilder toJson(Column... columns) {
+	public JsonObject toJson(Column... columns) {
 		return JSONUtils.toJson(this, columns);
 	}
 
-	public void parseJson(Reader reader, Column... columns) {
-		JSONUtils.parse(this, Json.createParser(reader), columns);
+//	public void parseJson(Reader reader, Column... columns) {
+//		JSONUtils.parse(this, Json.createParser(reader), columns);
+//	}
+	
+	public void parseJson(JsonReader reader, Column... columns) {
+		JsonObject json = new Gson().fromJson(reader, MapBasedORMappingBean.class);
+		for(Column col : columns) {
+			JsonElement el = json.get(col.getName());
+			if (el != null) {
+				if (DataType.FLOAT == col.getType()) {
+					val(col, el.getAsBigDecimal());
+				} else if (DataType.NUMERIC == col.getType()) {
+					val(col, el.getAsLong());
+				} else if (DataType.DATE == col.getType() || DataType.TIME == col.getType()) {
+					val(col, new Date(el.getAsLong()));
+				} else if (DataType.BOOLEAN == col.getType()) {
+					val(col, el.getAsBoolean());
+				} else {
+					val(col, el.getAsString());
+				}
+			}
+		}
 	}
 	
 	public boolean startsWith(String target, String prefix) {

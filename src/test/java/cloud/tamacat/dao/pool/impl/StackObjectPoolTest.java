@@ -8,7 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import cloud.tamacat.dao.pool.ObjectPool;
-import cloud.tamacat.dao.pool.impl.StackObjectPool;
 
 public class StackObjectPoolTest {
 
