@@ -28,8 +28,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>
-    <tamacat.version>[2.0-SNAPSHOT,2.1)</tamacat.version>
-    <junit.jupiter.version>[5.6,5.7)</junit.jupiter.version>
+    <junit.jupiter.version>[5.7,5.8.0-M1)</junit.jupiter.version>
     <buildDate>${maven.build.timestamp}</buildDate>
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
@@ -41,7 +40,7 @@
     <dependency>
       <groupId>cloud.tamacat</groupId>
       <artifactId>tamacat-core</artifactId>
-      <version>${tamacat.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -101,6 +100,7 @@
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
           <encoding>UTF-8</encoding>
+          <release>11</release>
         </configuration>
       </plugin>
       <plugin>
