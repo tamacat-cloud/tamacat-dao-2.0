@@ -21,6 +21,7 @@ module cloud.tamacat.dao {
 	
 	requires transitive cloud.tamacat.core;
 	requires transitive com.google.gson;
+	requires transitive org.slf4j;
 	requires transitive java.logging;
 	requires transitive java.naming;
 	requires transitive java.sql;
