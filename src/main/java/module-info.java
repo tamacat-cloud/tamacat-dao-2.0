@@ -17,7 +17,7 @@ module cloud.tamacat.dao {
 	opens cloud.tamacat.mock.sql;
 	
 	requires java.xml;
-	requires java.xml.bind;
+	requires jakarta.xml.bind;
 	
 	requires transitive cloud.tamacat.core;
 	requires transitive com.google.gson;
