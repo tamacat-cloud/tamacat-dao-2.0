@@ -42,7 +42,12 @@
       <artifactId>tamacat-core</artifactId>
       <version>${project.version}</version>
     </dependency>
-
+    
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.9</version>
+    </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
