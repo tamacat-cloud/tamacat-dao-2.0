@@ -7,8 +7,8 @@ package cloud.tamacat.dao.sql;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cloud.tamacat.dao.Condition;
 import cloud.tamacat.dao.Search;
+import cloud.tamacat.dao.Search.Conditions;
 import cloud.tamacat.dao.Search.ValueConvertFilter;
 import cloud.tamacat.dao.exception.InvalidParameterException;
 import cloud.tamacat.dao.meta.Column;
@@ -36,7 +36,7 @@ public class SQLParser {
 		this.valueConvertFilter = valueConvertFilter;
 	}
 
-	public String value(Column column, Condition condition, String... values) {
+	public String value(Column column, Conditions condition, String... values) {
 		String colName = MappingUtils.getColumnName(column);
 		StringBuffer search = new StringBuffer(colName + condition.getCondition());
 		if (values != null) {
@@ -116,7 +116,7 @@ public class SQLParser {
 		}
 	}
 	
-	protected String parseLikeStringValue(Condition condition, Column column, String value) {
+	protected String parseLikeStringValue(Conditions condition, Column column, String value) {
 		if (value == null) {
 			//like null -> like ''
 			value = "";

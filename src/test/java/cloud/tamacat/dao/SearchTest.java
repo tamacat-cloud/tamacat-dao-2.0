@@ -6,7 +6,10 @@ package cloud.tamacat.dao;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import cloud.tamacat.dao.Search.ValueConvertFilter;
+import cloud.tamacat.dao.impl.MySQLCondition;
+import cloud.tamacat.dao.impl.PostgreSQLCondition;
 import cloud.tamacat.dao.meta.DefaultColumn;
 import cloud.tamacat.dao.meta.DefaultTable;
 import cloud.tamacat.dao.meta.DataType;
@@ -72,6 +75,24 @@ public class SearchTest extends TestCase {
 		search = new Search();
 		search.and(column2, Condition.IN, "123","456","789");
 		assertEquals("test1.id in (123,456,789)", search.getSearchString());
+	}
+	
+	@Test
+	public void testRegexp_MySQL() {
+		search.and(column1, MySQLCondition.REGEXP, "^TamaCat$");
+		assertEquals("test1.name regexp '^TamaCat$'", search.getSearchString());
+	}
+	
+	@Test
+	public void testRlike_MySQL() {
+		search.and(column1, MySQLCondition.RLIKE, "^TamaCat$");
+		assertEquals("test1.name rlike '^TamaCat$'", search.getSearchString());
+	}
+	
+	@Test
+	public void testRegexp_PostgreSQL() {
+		search.and(column1, PostgreSQLCondition.REGEXP, "^TamaCat$");
+		assertEquals("test1.name ~ '^TamaCat$'", search.getSearchString());
 	}
 	
 	@Test

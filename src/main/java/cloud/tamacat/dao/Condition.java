@@ -4,7 +4,9 @@
  */
 package cloud.tamacat.dao;
 
-public enum Condition {
+import cloud.tamacat.dao.Search.Conditions;
+
+public enum Condition implements Conditions {
 
 	LIKE_HEAD(" like ", "#{value1}%"),
 	LIKE_PART(" like ", "%#{value1}%"),
@@ -18,7 +20,7 @@ public enum Condition {
 	GREATER_OR_EQUAL(">=", "#{value1}"),
 	IS_NULL(" is null", null),
 	NOT_NULL(" not null", null),
-	IN(" in ", "(#{values})")
+	IN(" in ", "(#{values})"),
 	;
 
 	private final String replaceHolder;
