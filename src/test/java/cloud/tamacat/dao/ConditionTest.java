@@ -4,12 +4,11 @@
  */
 package cloud.tamacat.dao;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import cloud.tamacat.dao.sql.SQLParser;
+import junit.framework.TestCase;
 
-public class ConditionTest {
+public class ConditionTest extends TestCase {
 
     @Test
     public void testGetReplaceHolder() {

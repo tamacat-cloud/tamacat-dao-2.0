@@ -68,10 +68,15 @@ public class DaoAdapter<T extends ORMappingSupport<T>> implements AutoCloseable 
 	}
 	
 	public void setDatabase(String dbname) {
-		if (di == null) {
-			di = DI.configure("db.xml");
+		try {
+			if (di == null) {
+				di = DI.configure("db.xml");
+			}
+			setDatabase(di, dbname);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DaoException(e);
 		}
-		setDatabase(di, dbname);
 	}
 	
 	/**

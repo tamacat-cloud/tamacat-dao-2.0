@@ -4,13 +4,12 @@
  */
 package cloud.tamacat.dao.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import cloud.tamacat.dao.DaoFactory;
 import cloud.tamacat.dao.Query;
+import junit.framework.TestCase;
 
-public class TestDaoTest {
+public class TestDaoTest extends TestCase {
 
 	@Test
 	public void test() {

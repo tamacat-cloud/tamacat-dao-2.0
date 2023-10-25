@@ -1,4 +1,5 @@
-module cloud.tamacat.dao {
+open module tamacat.dao {
+	
 	exports cloud.tamacat.dao;
 	exports cloud.tamacat.dao.event;
 	exports cloud.tamacat.dao.exception;
@@ -6,20 +7,14 @@ module cloud.tamacat.dao {
 	exports cloud.tamacat.dao.orm;
 	exports cloud.tamacat.dao.util;
 	exports cloud.tamacat.dao.sql;
-
-	opens cloud.tamacat.dao.impl;
-	opens cloud.tamacat.dao.pool;
-	opens cloud.tamacat.dao.pool.impl;
-	opens cloud.tamacat.dao.sql;
 	
 	//for unit test
 	exports cloud.tamacat.dao.test;
-	opens cloud.tamacat.mock.sql;
 	
 	requires java.xml;
 	requires jakarta.xml.bind;
 	
-	requires transitive cloud.tamacat.core;
+	requires transitive tamacat.core;
 	requires transitive com.google.gson;
 	requires transitive org.slf4j;
 	requires transitive java.logging;
