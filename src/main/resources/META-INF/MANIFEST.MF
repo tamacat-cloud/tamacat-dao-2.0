@@ -1,6 +1,6 @@
 Automatic-Module-Name: tamacat.dao
 Implementation-Title: tamacat-dao
-Implementation-Version: 2.0-20231025
+Implementation-Version: 2.0-20231026
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: cloud.tamacat.dao
 Bundle-Name: tamacat-dao
